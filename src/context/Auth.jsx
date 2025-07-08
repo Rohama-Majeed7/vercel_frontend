@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
   // userAuthentication
   const userAuthentication = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/user/profile`, {
+      const response = await fetch(`https://vercel-backend-8m5d.vercel.app/user/profile`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

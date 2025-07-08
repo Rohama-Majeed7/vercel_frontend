@@ -17,7 +17,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("http://localhost:4000/user/login", {
+      const res = await axios.post("https://vercel-backend-8m5d.vercel.app/user/login", {
         name: data.name,
         email: data.email,
         password: data.password,
@@ -75,7 +75,7 @@ const Login = () => {
           </button>
 
           <p className="text-center text-gray-600 text-sm">
-            Don't have an account?{" "}
+            Do not have an account?{" "}
             <NavLink to="/" className="text-indigo-500 hover:underline">
               Sign Up
             </NavLink>

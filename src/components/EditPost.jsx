@@ -25,7 +25,7 @@ const EditPost = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.put(`http://localhost:4000/user/update/${id}`, {
+      const res = await axios.put(`https://vercel-backend-8m5d.vercel.app/user/update/${id}`, {
         content: data.content,
       });
 

@@ -26,7 +26,7 @@ const UserData = () => {
   const onSubmit = async (data) => {
     await axios
       .post(
-        "http://localhost:4000/user/post",
+        "https://vercel-backend-8m5d.vercel.app/user/post",
         {
           content: data.content,
           image: selectedImage,
@@ -50,7 +50,7 @@ const UserData = () => {
 
   const onDelete = async (id) => {
     await axios
-      .delete(`http://localhost:4000/user/delete/${id}`)
+      .delete(`https://vercel-backend-8m5d.vercel.app/user/delete/${id}`)
       .then((res) => {
         if (res.status === 200) {
           toast.success(res.data.message);

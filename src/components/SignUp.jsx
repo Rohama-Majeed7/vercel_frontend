@@ -15,7 +15,7 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("http://localhost:4000/user/signup", {
+      const res = await axios.post("https://vercel-backend-8m5d.vercel.app/user/signup", {
         fullName: data.name,
         email: data.email,
         password: data.password,
