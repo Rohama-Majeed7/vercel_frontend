@@ -113,7 +113,7 @@ const UserData = () => {
         {userData.length === 0 ? (
           <p className="text-gray-300">No posts created yet.</p>
         ) : (
-          <main className="flex flex-col">
+          <main className="grid grid-cols-1 md:grid-cols-2">
             {userData.map((post, index) => {
               const postDate = new Date(post.date);
               const formattedDate = postDate.toLocaleDateString(undefined, {
@@ -145,7 +145,7 @@ const UserData = () => {
                     <img
                       src={post.image}
                       alt="Post"
-                      className="w-full max-w-[400px] max-h-[200px] object-contain rounded-lg border border-gray-200"
+                      className="w-full max-w-[400px] mx-auto max-h-[200px] object-contain rounded-lg border border-gray-200"
                     />
                   )}
 
