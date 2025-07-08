@@ -113,7 +113,7 @@ const UserData = () => {
         {userData.length === 0 ? (
           <p className="text-gray-300">No posts created yet.</p>
         ) : (
-          <main className="flex ">
+          <main className="flex flex-col">
             {userData.map((post, index) => {
               const postDate = new Date(post.date);
               const formattedDate = postDate.toLocaleDateString(undefined, {
