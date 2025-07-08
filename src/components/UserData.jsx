@@ -135,7 +135,7 @@ const UserData = () => {
                   <img
                     src={post.image}
                     alt="Post"
-                    className="w-full max-w-[400px] max-h-[400px] object-contain rounded-lg border border-gray-200"
+                    className="w-full max-w-[400px] max-h-[20px] object-contain rounded-lg border border-gray-200"
                   />
                 )}
                 <div className="flex gap-3 justify-end">
