@@ -17,15 +17,17 @@ const UserData = () => {
     formState: { errors },
   } = useForm();
 
+  // Handle image upload
   const onUploadImage = async (e) => {
     const file = e.target.files[0];
     const image = await uploadProfilePic(file);
     setSelectedImage(image.url);
   };
 
+  // Handle post submission
   const onSubmit = async (data) => {
-    await axios
-      .post(
+    try {
+      const res = await axios.post(
         "https://vercel-backend-8m5d.vercel.app/user/post",
         {
           content: data.content,
@@ -36,27 +38,29 @@ const UserData = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success(res.data.msg);
-        }
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-    manageState();
+      );
+      if (res.status === 200) {
+        toast.success(res.data.msg);
+        manageState();
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
+  // Handle post deletion
   const onDelete = async (id) => {
-    await axios
-      .delete(`https://vercel-backend-8m5d.vercel.app/user/delete/${id}`)
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success(res.data.message);
-        }
-      });
-    manageState();
+    try {
+      const res = await axios.delete(
+        `https://vercel-backend-8m5d.vercel.app/user/delete/${id}`
+      );
+      if (res.status === 200) {
+        toast.success(res.data.message);
+        manageState();
+      }
+    } catch (error) {
+      toast.error("Failed to delete post");
+    }
   };
 
   return (
@@ -67,14 +71,14 @@ const UserData = () => {
           Hi, <span className="text-blue-400">{authUser.fullName}</span> 👋
         </h1>
         <Link
-          to={"/logout"}
+          to="/logout"
           className="bg-red-600 hover:bg-red-500 transition text-white font-medium py-2 px-4 rounded-lg"
         >
           Logout
         </Link>
       </div>
 
-      {/* Create Post */}
+      {/* Create Post Form */}
       <div className="bg-white text-black rounded-xl shadow-lg p-6 max-w-4xl mx-auto mb-10">
         <h2 className="text-xl font-bold mb-4">Create a Post</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -102,59 +106,67 @@ const UserData = () => {
         </form>
       </div>
 
-      {/* Posts */}
+      {/* User Posts */}
       <div className="max-w-4xl mx-auto space-y-6">
         <h2 className="text-xl text-white font-semibold mb-2">Your Posts</h2>
+
         {userData.length === 0 ? (
           <p className="text-gray-300">No posts created yet.</p>
         ) : (
-          userData.map((post, index) => {
-            const postDate = new Date(post.date);
-            const formattedDate = postDate.toLocaleDateString(undefined, {
-              weekday: "long",
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            });
-            const time = postDate.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            });
+          <main className="flex ">
+            {userData.map((post, index) => {
+              const postDate = new Date(post.date);
+              const formattedDate = postDate.toLocaleDateString(undefined, {
+                weekday: "long",
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              });
+              const time = postDate.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
 
-            return (
-              <div
-                key={index}
-                className="bg-white text-black rounded-lg shadow-md p-4 space-y-3"
-              >
-                <div className="text-sm flex justify-between text-gray-500">
-                  <span>{authUser.email}</span>
-                  <span>{formattedDate} at {time}</span>
+              return (
+                <div
+                  key={index}
+                  className="bg-white text-black rounded-lg shadow-md p-4 space-y-3"
+                >
+                  <div className="text-sm flex justify-between text-gray-500">
+                    <span>{authUser.email}</span>
+                    <span>
+                      {formattedDate} at {time}
+                    </span>
+                  </div>
+
+                  <p className="text-gray-800">{post.content}</p>
+
+                  {post.image && (
+                    <img
+                      src={post.image}
+                      alt="Post"
+                      className="w-full max-w-[400px] max-h-[200px] object-contain rounded-lg border border-gray-200"
+                    />
+                  )}
+
+                  <div className="flex gap-3 justify-end">
+                    <NavLink
+                      to={`/profile/${post._id}`}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md"
+                    >
+                      Edit
+                    </NavLink>
+                    <button
+                      onClick={() => onDelete(post._id)}
+                      className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
-                <p className="text-gray-800">{post.content}</p>
-                {post.image && (
-                  <img
-                    src={post.image}
-                    alt="Post"
-                    className="w-full max-w-[400px] max-h-[200px] object-contain rounded-lg border border-gray-200"
-                  />
-                )}
-                <div className="flex gap-3 justify-end">
-                  <NavLink
-                    to={`/profile/${post._id}`}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md"
-                  >
-                    Edit
-                  </NavLink>
-                  <button
-                    onClick={() => onDelete(post._id)}
-                    className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-md"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            );
-          })
+              );
+            })}
+          </main>
         )}
       </div>
     </section>
