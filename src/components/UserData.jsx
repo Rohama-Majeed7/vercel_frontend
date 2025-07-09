@@ -113,7 +113,7 @@ const UserData = () => {
         {userData.length === 0 ? (
           <p className="text-gray-300">No posts created yet.</p>
         ) : (
-          <main className="grid grid-cols-1 md:grid-cols-2">
+          <main className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {userData.map((post, index) => {
               const postDate = new Date(post.date);
               const formattedDate = postDate.toLocaleDateString(undefined, {
